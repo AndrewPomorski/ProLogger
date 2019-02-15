@@ -1,3 +1,26 @@
+/*
+The MIT License
+
+Copyright (c) 2019 Andrew Pomorski
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
 import chalk from 'chalk';
 import { writeFile, readFileSync } from 'fs';
 
@@ -18,16 +41,18 @@ class LightLogger {
         warn: '#ffa500',
         error: '#ff4500'
     };
-    private messageTemplates = {
-        verbose: ``,
-        short: ``
-    }
-    
+    private capturable = false;
+    private captureKey: string;
 
-    constructor(loggerName: string, logToFile?: boolean, logFilePath?: string, verbose?: boolean, customColors?: boolean) {
+
+    constructor(loggerName: string, logToFile?: boolean, logFilePath?: string, verbose?: boolean, capturable?: boolean, customColors?: boolean) {
         this.loggerName = loggerName;
+        if (this.loggerName === undefined) {
+            throw new Error("FATAL: Logger name can't be null.");
+        }
         this.logToFile = logToFile;
         this.isVerbose = verbose;
+        this.capturable = capturable;
         if (logFilePath != null) {
             this.logFilePath = logFilePath;
         }
@@ -46,9 +71,13 @@ class LightLogger {
         // load custom properties
         if (this.customColors) {
             this.setCustomColors(configData.colorCodes);
+        } 
+        if (this.capturable) {
+            this.setCaptureKey(configData.captureKey);
         }
     }
 
+    /*Setters*/
     setCustomColors(colorData) {
         this.messageColors.trace = colorData.trace;
         this.messageColors.warn = colorData.warn;
@@ -63,6 +92,14 @@ class LightLogger {
 
     setLogFilePath(logFilePath: string){
         this.logFilePath = logFilePath;
+    }
+
+    setCapturable(capturable: boolean){ 
+        this.capturable = capturable;
+    }
+
+    setCaptureKey(key: string) {
+        this.captureKey = key;
     }
 
     writeFileLog(message: string, level: string) {
@@ -96,7 +133,11 @@ class LightLogger {
         const date = new Date();
         let logMessage: string;
         if (this.isVerbose) {
-            logMessage = `[${this.loggerName}] ${date} : ${level} :: ${message}`;
+            if (this.captureKey !== null) {
+                logMessage = `[APIKEY:${this.captureKey}] [${this.loggerName}] ${date} : ${level} :: ${message}`;
+            } else {
+                logMessage = `[${this.loggerName}] ${date} : ${level} :: ${message}`;
+            }
         } else {
             logMessage = `[${this.loggerName}] ${level} :: ${message}`;
         }
@@ -156,8 +197,4 @@ class LightLogger {
         if (!this.isSilent) console.log(chalk.hex(this.messageColors.error)(logMessage));
     }
 }
-let log = new LightLogger('LightLogger', false, '', true, false);
-log.info("info");
-log.warn("warn");
-log.error("error");
 export = LightLogger;

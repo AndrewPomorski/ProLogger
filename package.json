@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc; npm run minify",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test/test.js",
     "run": "node dist/index.js",
     "minify": "uglifyjs ./dist/prologger.js &> ./dist/prologger.min.js"
   },

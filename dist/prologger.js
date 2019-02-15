@@ -1,8 +1,31 @@
 "use strict";
+/*
+The MIT License
+
+Copyright (c) 2019 Andrew Pomorski
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
 var chalk_1 = require("chalk");
 var fs_1 = require("fs");
 var LightLogger = /** @class */ (function () {
-    function LightLogger(loggerName, logToFile, logFilePath, verbose, customColors) {
+    function LightLogger(loggerName, logToFile, logFilePath, verbose, capturable, customColors) {
         this.logFilePath = './log.json';
         this.logObject = [];
         this.errorLevels = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"];
@@ -17,13 +40,14 @@ var LightLogger = /** @class */ (function () {
             warn: '#ffa500',
             error: '#ff4500'
         };
-        this.messageTemplates = {
-            verbose: "",
-            short: ""
-        };
+        this.capturable = false;
         this.loggerName = loggerName;
+        if (this.loggerName === undefined) {
+            throw new Error("FATAL: Logger name can't be null.");
+        }
         this.logToFile = logToFile;
         this.isVerbose = verbose;
+        this.capturable = capturable;
         if (logFilePath != null) {
             this.logFilePath = logFilePath;
         }
@@ -43,7 +67,11 @@ var LightLogger = /** @class */ (function () {
         if (this.customColors) {
             this.setCustomColors(configData.colorCodes);
         }
+        if (this.capturable) {
+            this.setCaptureKey(configData.captureKey);
+        }
     };
+    /*Setters*/
     LightLogger.prototype.setCustomColors = function (colorData) {
         this.messageColors.trace = colorData.trace;
         this.messageColors.warn = colorData.warn;
@@ -56,6 +84,12 @@ var LightLogger = /** @class */ (function () {
     };
     LightLogger.prototype.setLogFilePath = function (logFilePath) {
         this.logFilePath = logFilePath;
+    };
+    LightLogger.prototype.setCapturable = function (capturable) {
+        this.capturable = capturable;
+    };
+    LightLogger.prototype.setCaptureKey = function (key) {
+        this.captureKey = key;
     };
     LightLogger.prototype.writeFileLog = function (message, level) {
         if (this.logToFile) {
@@ -83,7 +117,12 @@ var LightLogger = /** @class */ (function () {
         var date = new Date();
         var logMessage;
         if (this.isVerbose) {
-            logMessage = "[" + this.loggerName + "] " + date + " : " + level + " :: " + message;
+            if (this.captureKey !== null) {
+                logMessage = "[APIKEY:" + this.captureKey + "] [" + this.loggerName + "] " + date + " : " + level + " :: " + message;
+            }
+            else {
+                logMessage = "[" + this.loggerName + "] " + date + " : " + level + " :: " + message;
+            }
         }
         else {
             logMessage = "[" + this.loggerName + "] " + level + " :: " + message;
@@ -149,8 +188,4 @@ var LightLogger = /** @class */ (function () {
     };
     return LightLogger;
 }());
-var log = new LightLogger('LightLogger', false, '', true, false);
-log.info("info");
-log.warn("warn");
-log.error("error");
 module.exports = LightLogger;
