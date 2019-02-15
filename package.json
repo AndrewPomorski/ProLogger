@@ -7,7 +7,7 @@
     "build": "tsc; npm run minify",
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node dist/index.js",
-    "minify": "uglifyjs ./dist/index.js &> ./dist/index.min.js"
+    "minify": "uglifyjs ./dist/prologger.js &> ./dist/prologger.min.js"
   },
   "author": "",
   "license": "ISC",

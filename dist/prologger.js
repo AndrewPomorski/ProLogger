@@ -31,15 +31,17 @@ var LightLogger = /** @class */ (function () {
         this.readConfig();
     }
     LightLogger.prototype.readConfig = function () {
+        var configData;
         try {
             var content = fs_1.readFileSync(this.configFileName);
-            var configData = JSON.parse(content.toString());
-            if (this.customColors) {
-                this.setCustomColors(configData.colorCodes);
-            }
+            configData = JSON.parse(content.toString());
         }
         catch (Error) {
-            console.log("Error: " + this.configFileName + " not found!");
+            console.log("WARN:: " + this.configFileName + " not found!");
+        }
+        // load custom properties
+        if (this.customColors) {
+            this.setCustomColors(configData.colorCodes);
         }
     };
     LightLogger.prototype.setCustomColors = function (colorData) {
