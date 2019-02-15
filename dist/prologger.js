@@ -28,7 +28,6 @@ var LightLogger = /** @class */ (function () {
     function LightLogger(options) {
         this.logFilePath = './log.json';
         this.logObject = [];
-        this.errorLevels = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"];
         this.isSilent = false;
         this.isVerbose = false;
         this.customColors = true;

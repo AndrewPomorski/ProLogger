@@ -28,7 +28,6 @@ class LightLogger {
     private logToFile: boolean;
     private logFilePath = './log.json';
     private logObject = [];
-    private errorLevels  = ["TRACE", "DEBUG", "INFO", "WARN",  "ERROR"];
     private isSilent = false;
     private isVerbose = false;
     private customColors = true;
