@@ -17,6 +17,10 @@ var LightLogger = /** @class */ (function () {
             warn: '#ffa500',
             error: '#ff4500'
         };
+        this.messageTemplates = {
+            verbose: "",
+            short: ""
+        };
         this.loggerName = loggerName;
         this.logToFile = logToFile;
         this.isVerbose = verbose;
