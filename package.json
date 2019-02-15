@@ -1,0 +1,18 @@
+{
+  "name": "nodeloger",
+  "version": "1.0.0",
+  "description": "Simple lightweight nodejs logging libarary",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc; npm run minify",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node dist/index.js",
+    "minify": "uglifyjs ./dist/index.js &> ./dist/index.min.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^11.9.4",
+    "chalk": "^2.4.2"
+  }
+}
