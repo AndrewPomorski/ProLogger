@@ -45,7 +45,6 @@ var LightLogger = /** @class */ (function () {
         if (this.loggerName === undefined) {
             throw new Error("FATAL: Logger name can't be null.");
         }
-        this.logToFile = logToFile;
         this.isVerbose = verbose;
         this.capturable = capturable;
         if (logFilePath != null) {
@@ -68,7 +67,7 @@ var LightLogger = /** @class */ (function () {
             this.setCustomColors(configData.colorCodes);
         }
         if (this.capturable) {
-            this.setCaptureKey(configData.captureKey);
+            this.setCaptureMessage(configData.captureKey);
         }
     };
     /*Setters*/
@@ -88,8 +87,8 @@ var LightLogger = /** @class */ (function () {
     LightLogger.prototype.setCapturable = function (capturable) {
         this.capturable = capturable;
     };
-    LightLogger.prototype.setCaptureKey = function (key) {
-        this.captureKey = key;
+    LightLogger.prototype.setCaptureMessage = function (msg) {
+        this.captureMessage = msg;
     };
     LightLogger.prototype.writeFileLog = function (message, level) {
         if (this.logToFile) {
@@ -117,8 +116,8 @@ var LightLogger = /** @class */ (function () {
         var date = new Date();
         var logMessage;
         if (this.isVerbose) {
-            if (this.captureKey !== null) {
-                logMessage = "[APIKEY:" + this.captureKey + "] [" + this.loggerName + "] " + date + " : " + level + " :: " + message;
+            if (this.captureMessage !== null) {
+                logMessage = "[APIKEY:" + this.captureMessage + "] [" + this.loggerName + "] " + date + " : " + level + " :: " + message;
             }
             else {
                 logMessage = "[" + this.loggerName + "] " + date + " : " + level + " :: " + message;
@@ -155,36 +154,36 @@ var LightLogger = /** @class */ (function () {
         var level = 'TRACE';
         var logMessage = this.getMessage(message, level);
         this.writeFileLog(logMessage, level);
-        if (!this.isSilent)
-            console.log(chalk_1["default"].hex(this.messageColors.trace)(logMessage));
+        this.printMessage(this.messageColors.trace, logMessage);
     };
     LightLogger.prototype.debug = function (message) {
         var level = 'DEBUG';
         var logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent)
-            console.log(chalk_1["default"].hex(this.messageColors.debug)(logMessage));
+        this.printMessage(this.messageColors.debug, logMessage);
     };
     LightLogger.prototype.info = function (message) {
         var level = 'INFO';
         var logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent)
-            console.log(chalk_1["default"].hex(this.messageColors.info)(logMessage));
+        this.printMessage(this.messageColors.info, logMessage);
     };
     LightLogger.prototype.warn = function (message) {
         var level = 'WARN';
         var logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent)
-            console.log(chalk_1["default"].hex(this.messageColors.warn)(logMessage));
+        this.printMessage(this.messageColors.warn, logMessage);
     };
     LightLogger.prototype.error = function (message) {
         var level = 'ERROR';
         var logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent)
-            console.log(chalk_1["default"].hex(this.messageColors.error)(logMessage));
+        this.printMessage(this.messageColors.error, logMessage);
+    };
+    LightLogger.prototype.printMessage = function (color, message) {
+        if (!this.isSilent) {
+            console.log(chalk_1["default"].hex(color)(message));
+        }
     };
     return LightLogger;
 }());

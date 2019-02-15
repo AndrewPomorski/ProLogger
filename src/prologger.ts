@@ -42,21 +42,26 @@ class LightLogger {
         error: '#ff4500'
     };
     private capturable = false;
-    private captureKey: string;
+    private captureMessage: string;
+    private options = {
+        logToFile: false,
+        logFilePath: "./log.js",
+        verbose: true,
+        capturable: false,
+        customColors: false
+    }
 
-
-    constructor(loggerName: string, logToFile?: boolean, logFilePath?: string, verbose?: boolean, capturable?: boolean, customColors?: boolean) {
+    constructor(loggerName: string, options: any) {
         this.loggerName = loggerName;
         if (this.loggerName === undefined) {
             throw new Error("FATAL: Logger name can't be null.");
         }
-        this.logToFile = logToFile;
-        this.isVerbose = verbose;
-        this.capturable = capturable;
-        if (logFilePath != null) {
-            this.logFilePath = logFilePath;
+        this.isVerbose = options.verbose;
+        this.capturable = options.capturable;
+        if (options.logFilePath != null) {
+            this.logFilePath = options.logFilePath;
         }
-        this.customColors = customColors;
+        this.customColors = options.customColors;
         this.readConfig();
     }
 
@@ -73,7 +78,7 @@ class LightLogger {
             this.setCustomColors(configData.colorCodes);
         } 
         if (this.capturable) {
-            this.setCaptureKey(configData.captureKey);
+            this.setCaptureMessage(configData.captureKey);
         }
     }
 
@@ -98,8 +103,8 @@ class LightLogger {
         this.capturable = capturable;
     }
 
-    setCaptureKey(key: string) {
-        this.captureKey = key;
+    setCaptureMessage(msg: string) {
+        this.captureMessage = msg;
     }
 
     writeFileLog(message: string, level: string) {
@@ -133,8 +138,8 @@ class LightLogger {
         const date = new Date();
         let logMessage: string;
         if (this.isVerbose) {
-            if (this.captureKey !== null) {
-                logMessage = `[APIKEY:${this.captureKey}] [${this.loggerName}] ${date} : ${level} :: ${message}`;
+            if (this.captureMessage !== null) {
+                logMessage = `[APIKEY:${this.captureMessage}] [${this.loggerName}] ${date} : ${level} :: ${message}`;
             } else {
                 logMessage = `[${this.loggerName}] ${date} : ${level} :: ${message}`;
             }
@@ -166,35 +171,41 @@ class LightLogger {
         const level = 'TRACE';
         const logMessage = this.getMessage(message, level);
         this.writeFileLog(logMessage, level);
-        if (!this.isSilent) console.log(chalk.hex(this.messageColors.trace)(logMessage));
+        this.printMessage(this.messageColors.trace, logMessage);
     }
 
     debug(message: string) {
         const level = 'DEBUG';
         const logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent) console.log(chalk.hex(this.messageColors.debug)(logMessage));
+        this.printMessage(this.messageColors.debug, logMessage);
     }
 
     info(message: string) {
         const level = 'INFO';
         const logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent) console.log(chalk.hex(this.messageColors.info)(logMessage));
+        this.printMessage(this.messageColors.info, logMessage);
     }
 
     warn(message: string) {
         const level = 'WARN';
         const logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent) console.log(chalk.hex(this.messageColors.warn)(logMessage));
+        this.printMessage(this.messageColors.warn, logMessage);
     }
 
     error(message: string){
         const level = 'ERROR';
         const logMessage = this.getMessage(message, level);
         this.writeFileLog(message, level);
-        if (!this.isSilent) console.log(chalk.hex(this.messageColors.error)(logMessage));
+        this.printMessage(this.messageColors.error, logMessage);
+    }
+
+    printMessage(color: string, message: string) {
+        if (!this.isSilent) {
+            console.log(chalk.hex(color)(message));
+        }
     }
 }
 export = LightLogger;

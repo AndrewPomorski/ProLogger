@@ -1,0 +1,1 @@
+[{"date":"2019-02-15T07:56:10.874Z","level":"DEBUG","message":"debug message"},{"date":"2019-02-15T07:56:10.880Z","level":"INFO","message":"info"},{"date":"2019-02-15T07:56:10.881Z","level":"WARN","message":"warn"}]
