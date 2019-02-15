@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import { writeFile, readFileSync } from 'fs';
 
 class LightLogger {
-
     private logToFile: boolean;
     private logFilePath = './log.json';
     private logObject = [];
