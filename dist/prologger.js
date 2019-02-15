@@ -25,7 +25,7 @@ THE SOFTWARE.
 var chalk_1 = require("chalk");
 var fs_1 = require("fs");
 var LightLogger = /** @class */ (function () {
-    function LightLogger(loggerName, logToFile, logFilePath, verbose, capturable, customColors) {
+    function LightLogger(options) {
         this.logFilePath = './log.json';
         this.logObject = [];
         this.errorLevels = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"];
@@ -41,16 +41,14 @@ var LightLogger = /** @class */ (function () {
             error: '#ff4500'
         };
         this.capturable = false;
-        this.loggerName = loggerName;
-        if (this.loggerName === undefined) {
-            throw new Error("FATAL: Logger name can't be null.");
+        this.loggerName = options.loggerName;
+        this.isVerbose = options.verbose;
+        this.captureMessage = options.captureMessage;
+        this.capturable = options.capturable;
+        if (options.logFilePath != null) {
+            this.logFilePath = options.logFilePath;
         }
-        this.isVerbose = verbose;
-        this.capturable = capturable;
-        if (logFilePath != null) {
-            this.logFilePath = logFilePath;
-        }
-        this.customColors = customColors;
+        this.customColors = options.customColors;
         this.readConfig();
     }
     LightLogger.prototype.readConfig = function () {
@@ -65,9 +63,6 @@ var LightLogger = /** @class */ (function () {
         // load custom properties
         if (this.customColors) {
             this.setCustomColors(configData.colorCodes);
-        }
-        if (this.capturable) {
-            this.setCaptureMessage(configData.captureKey);
         }
     };
     /*Setters*/
@@ -116,12 +111,9 @@ var LightLogger = /** @class */ (function () {
         var date = new Date();
         var logMessage;
         if (this.isVerbose) {
-            if (this.captureMessage !== null) {
-                logMessage = "[APIKEY:" + this.captureMessage + "] [" + this.loggerName + "] " + date + " : " + level + " :: " + message;
-            }
-            else {
-                logMessage = "[" + this.loggerName + "] " + date + " : " + level + " :: " + message;
-            }
+            if (this.captureMessage === null || this.captureMessage === undefined)
+                this.captureMessage = "";
+            logMessage = this.captureMessage + " [" + this.loggerName + "] " + date + " : " + level + " :: " + message;
         }
         else {
             logMessage = "[" + this.loggerName + "] " + level + " :: " + message;

@@ -43,20 +43,11 @@ class LightLogger {
     };
     private capturable = false;
     private captureMessage: string;
-    private options = {
-        logToFile: false,
-        logFilePath: "./log.js",
-        verbose: true,
-        capturable: false,
-        customColors: false
-    }
 
-    constructor(loggerName: string, options: any) {
-        this.loggerName = loggerName;
-        if (this.loggerName === undefined) {
-            throw new Error("FATAL: Logger name can't be null.");
-        }
+    constructor(options?: any) {
+        this.loggerName = options.loggerName;
         this.isVerbose = options.verbose;
+        this.captureMessage = options.captureMessage;
         this.capturable = options.capturable;
         if (options.logFilePath != null) {
             this.logFilePath = options.logFilePath;
@@ -76,9 +67,6 @@ class LightLogger {
         // load custom properties
         if (this.customColors) {
             this.setCustomColors(configData.colorCodes);
-        } 
-        if (this.capturable) {
-            this.setCaptureMessage(configData.captureKey);
         }
     }
 
@@ -138,11 +126,8 @@ class LightLogger {
         const date = new Date();
         let logMessage: string;
         if (this.isVerbose) {
-            if (this.captureMessage !== null) {
-                logMessage = `[APIKEY:${this.captureMessage}] [${this.loggerName}] ${date} : ${level} :: ${message}`;
-            } else {
-                logMessage = `[${this.loggerName}] ${date} : ${level} :: ${message}`;
-            }
+            if (this.captureMessage === null || this.captureMessage === undefined) this.captureMessage = "";
+            logMessage = `${this.captureMessage} [${this.loggerName}] ${date} : ${level} :: ${message}`;
         } else {
             logMessage = `[${this.loggerName}] ${level} :: ${message}`;
         }
