@@ -24,7 +24,7 @@ Some **upcoming features** I have in mind:
  - Browser support
 
 
-The idea is to making as fully-featured as possible without adding too much overhead to something as basic as logging. 
+The idea is to make it as fully-featured as possible without adding too much overhead to something as basic as logging. 
 The minified file is only 3.8K small, however the goal is to go under 2KB and dependancy-free.
 
 ## Usage
