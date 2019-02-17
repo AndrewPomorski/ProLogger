@@ -2,7 +2,7 @@
   "name": "nodeloger",
   "version": "1.0.0",
   "description": "Simple lightweight nodejs logging libarary",
-  "main": "index.js",
+  "main": "dist/prologger.js",
   "scripts": {
     "build": "tsc; npm run minify",
     "test": "node test/test.js",
