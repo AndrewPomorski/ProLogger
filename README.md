@@ -4,7 +4,7 @@
 
 ProLogger is an attempt to create a more robust, hackable logging solution for Javascript.
 
-✅ So far it features:
+✅ Features:
 
  - Configurable color schemes
  - 5 levels of logs (TRACE, DEBUG, INFO, WARN, ERROR)
@@ -13,13 +13,13 @@ ProLogger is an attempt to create a more robust, hackable logging solution for J
  - Silencing
  - Verbose mode
 
-📝 Some **upcoming features** I have in mind:
+📝 Some of the **upcoming** features I have in mind:
  
- - Editing message template
+ - Editing message templates
  - Logstash support
  - Silencing on a per-level basis
  - TypeScript support
- - Optimizing file size
+ - File size optimization
  - Removing unnecessary dependancies
  - Browser support
 
@@ -30,7 +30,7 @@ The minified file is only 3.8K small, however the goal is to go under 2KB and de
 ## Usage
 
 ### Initialization 
-To get ProLogger just clone the repository (it will be published to npm eventually)
+To get ProLogger just clone this repository (it will be published to npm eventually)
 
 Usage is very simple, after cloning the package just include ```prologger.js``` in your javascript file (you can also use ```prologger.min.js```)
 
