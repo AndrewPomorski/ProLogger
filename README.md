@@ -4,7 +4,7 @@
 
 ProLogger is an attempt to create a more robust, hackable logging solution for Javascript.
 
-So far it features:
+✅ So far it features:
 
  - Configurable color schemes
  - 5 levels of logs (TRACE, DEBUG, INFO, WARN, ERROR)
@@ -12,8 +12,8 @@ So far it features:
  - Inserting custom elements to message template (for example API keys for easier logs parsing)
  - Silencing
  - Verbose mode
- 
-Some **upcoming features** I have in mind:
+
+📝 Some **upcoming features** I have in mind:
  
  - Editing message template
  - Logstash support
@@ -25,7 +25,7 @@ Some **upcoming features** I have in mind:
 
 
 The idea is to making as fully-featured as possible without adding too much overhead to something as basic as logging. 
-The minified file is only 3.8K small, however the goal is to go under 2KB and dependancy-free.
+The minified file is only 3.8K small, however the goal is to go under 2KB and dependancy-free. Right now ProLogger uses amazing [chalk](https://github.com/chalk/chalk) to setcolorful messages.
 
 ## Usage
 
