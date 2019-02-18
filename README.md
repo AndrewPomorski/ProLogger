@@ -1,4 +1,6 @@
 # Pro Logger
+![Size](https://img.shields.io/github/size/andrewpomorski/prologger/dist/prologger.min.js.svg?style=flat-square)
+
 
 ## About
 
