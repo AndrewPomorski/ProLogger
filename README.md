@@ -24,8 +24,8 @@ ProLogger is an attempt to create a more robust, hackable logging solution for J
  - Browser support
 
 
-The idea is to making as fully-featured as possible without adding too much overhead to something as basic as logging. 
-The minified file is only 3.8K small, however the goal is to go under 2KB and dependancy-free. Right now ProLogger uses amazing [chalk](https://github.com/chalk/chalk) to print beautiful and readable messages.
+The underlying concept behind ProLogger is to make it as fully-featured as possible without adding too much overhead to something as basic as logging. 
+The minified file is only **3.8K** small, however the goal is to go under 2KB and dependancy-free. Right now ProLogger uses amazing [chalk](https://github.com/chalk/chalk) library to print beautiful and readable messages.
 
 ## Usage
 
